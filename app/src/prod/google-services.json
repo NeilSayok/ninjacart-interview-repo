@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1074889648412",
+    "project_id": "interview-prod-e93c6",
+    "storage_bucket": "interview-prod-e93c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074889648412:android:067305d0f6184dca7db2d9",
+        "android_client_info": {
+          "package_name": "com.neilsayok.template"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTqAhx9yvr3ud7uk8w7bn7h64Ts_x1ohw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

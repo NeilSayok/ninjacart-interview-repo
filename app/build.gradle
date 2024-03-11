@@ -1,0 +1,220 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'com.google.firebase.appdistribution'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
+}
+
+android {
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+    signingConfigs {
+//        release {
+//            storeFile file(localProperties['RELEASE_STORE_FILE'])
+//            storePassword localProperties['RELEASE_STORE_PASSWORD']
+//            keyAlias localProperties['RELEASE_KEY_ALIAS']
+//            keyPassword localProperties['RELEASE_STORE_PASSWORD']
+//        }
+
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/java'
+        release.java.srcDirs += 'src/release/java'
+        debug.java.srcDirs += 'src/debug/java'
+    }
+
+
+    namespace 'com.neilsayok.template'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.neilsayok.template"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildFeatures {
+        compose true
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            manifestPlaceholders
+            manifestPlaceholders.crashlyticsCollectionEnabled = "true"
+            ext.enableCrashlytics = true
+            ext.alwaysUpdateBuildId = true
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
+        }
+
+        debug {
+            manifestPlaceholders.crashlyticsCollectionEnabled = "false"
+            ext.enableCrashlytics = false
+            ext.alwaysUpdateBuildId = false
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.1'
+    }
+    packaging {
+        resources {
+            it.excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    flavorDimensions = ["template"]
+
+    productFlavors {
+        stage {
+            dimension "template"
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-stage"
+            resValue "string", "app_name", "Template Stage"
+            buildConfigField "String", "PROVIDER_AUTHORITY", '"com.kpn.store.stage.fileprovider"'
+            buildConfigField "String", "HOST_NAME", '"kpn-staging.ibo.com"'
+            buildConfigField "String", "DATA_STORE", '"TEMPLATE_DATA_STORE"'
+            buildConfigField "String", "BFF_HOST", '"https://api-staging.kpnfarmfresh.com/s/command-center/api/"'
+            firebaseAppDistribution {
+                artifactType = "APK"
+                releaseNotesFile = "$rootDir/releasenotes.txt"
+                groupsFile = "$rootDir/kpn-testers.txt"
+            }
+        }
+        prod {
+            dimension "template"
+            resValue "string", "app_name", "Template"
+            manifestPlaceholders.hostName = "command-center.kpnfarmfresh.com"
+            buildConfigField "String", "HOST_NAME", '"api.kpnfarmfresh.com"'
+            buildConfigField "String", "DATA_STORE", '"TEMPLATE_DATA_STORE"'
+            buildConfigField "String", "BFF_HOST", '"https://api.kpnfarmfresh.com/s/command-center/api/"'
+            firebaseAppDistribution {
+                artifactType = "APK"
+                releaseNotesFile = "$rootDir/releasenotes.txt"
+                groupsFile = "$rootDir/uat-testers.txt"
+            }
+        }
+    }
+
+
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+    implementation 'androidx.activity:activity-compose:1.8.2'
+
+
+    //Compose
+    implementation platform('androidx.compose:compose-bom:2024.01.00')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material:material'
+    implementation "androidx.compose.material:material-icons-extended"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "androidx.compose.runtime:runtime-livedata"
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation "com.google.firebase:firebase-analytics-ktx"
+    implementation "com.google.firebase:firebase-config"
+    implementation "com.google.firebase:firebase-perf-ktx"
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'androidx.compose.ui:ui-text-google-fonts:1.6.3'
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
+    releaseImplementation "com.google.firebase:firebase-crashlytics-ktx"
+
+    //Lottie
+    implementation "com.airbnb.android:lottie-compose:$lottieVersion"
+
+    // SDP & SSP Dependencies
+    implementation "com.intuit.sdp:sdp-android:$sdp_version"
+    implementation "com.intuit.ssp:ssp-android:$sdp_version"
+
+    // Internet Calling Dependencies
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.google.code.gson:gson:2.10"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor_version"
+
+    // Dependency Injection
+    implementation "com.google.dagger:hilt-android:2.50"
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    implementation "androidx.hilt:hilt-navigation-fragment:1.2.0"
+    implementation "javax.inject:javax.inject:$javax_inject_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.2.0'
+
+
+    //Multidex to use more than 64k functions
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+    //Datastore
+    implementation "androidx.datastore:datastore-preferences:$data_store_version"
+
+    //Compose Navigation
+    implementation "androidx.navigation:navigation-compose:2.7.7"
+
+    //Image Loader
+    implementation("io.coil-kt:coil-compose:$coil_version")
+    implementation("io.coil-kt:coil-svg:$coil_version")
+
+    //Permission
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+//    //Flipper
+    debugImplementation 'com.facebook.flipper:flipper:0.232.0'
+    debugImplementation 'com.facebook.soloader:soloader:0.10.5'
+    debugImplementation 'com.facebook.flipper:flipper-network-plugin:0.232.0'
+// //Flipper
+//    implementation 'com.facebook.flipper:flipper:0.232.0'
+//    implementation 'com.facebook.soloader:soloader:0.10.5'
+//    implementation 'com.facebook.flipper:flipper-network-plugin:0.232.0'
+
+    // Play Store dependencies
+    implementation("com.google.android.play:app-update:$google_play_version")
+    implementation("com.google.android.play:app-update-ktx:$google_play_version")
+
+
+    implementation 'com.jakewharton:process-phoenix:2.0.0'
+
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.08.00')
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}

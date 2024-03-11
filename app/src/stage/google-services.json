@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "770119852148",
+    "project_id": "interview-stage-decb2",
+    "storage_bucket": "interview-stage-decb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770119852148:android:45172a453ac5e368313121",
+        "android_client_info": {
+          "package_name": "com.neilsayok.template.staging"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_zFR44Z3mA84ECXqwGTTAvCdziTB3uW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
