@@ -12,12 +12,14 @@ import com.neilsayok.template.data.datastore.PreferenceDataStoreHelper
 import com.neilsayok.template.data.model.common.Resource
 import com.neilsayok.template.data.model.common.error.ErrorEventData
 import com.neilsayok.template.domain.interceptors.AuthorizationInterceptorKPN
+import com.neilsayok.template.domain.repositories.FetchPriceRepository
 import com.neilsayok.template.domain.services.ApiInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,6 +41,11 @@ object AppModule {
     ): Context {
         return context
     }
+
+    @Singleton
+    @Provides
+    fun providesErrorLiveData() = MutableStateFlow<Resource<ErrorEventData?>?>(null)
+
 
     @Singleton
     @Provides
@@ -90,9 +97,11 @@ object AppModule {
         retrofit.create(ApiInterface::class.java)
 
 
+
     @Singleton
     @Provides
-    fun providesErrorLiveData() = MutableLiveData<Resource<ErrorEventData?>>()
+    fun providesFetchPriceRepository(apiInterface: ApiInterface) = FetchPriceRepository(apiInterface)
+
 
 
 }

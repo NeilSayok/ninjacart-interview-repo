@@ -101,10 +101,8 @@ android {
             applicationIdSuffix ".staging"
             versionNameSuffix "-stage"
             resValue "string", "app_name", "Template Stage"
-            buildConfigField "String", "PROVIDER_AUTHORITY", '"com.kpn.store.stage.fileprovider"'
-            buildConfigField "String", "HOST_NAME", '"kpn-staging.ibo.com"'
             buildConfigField "String", "DATA_STORE", '"TEMPLATE_DATA_STORE"'
-            buildConfigField "String", "BFF_HOST", '"https://api-staging.kpnfarmfresh.com/s/command-center/api/"'
+            buildConfigField "String", "BFF_HOST", '"https://neilsayok.github.io/imagelib/apis/"'
             firebaseAppDistribution {
                 artifactType = "APK"
                 releaseNotesFile = "$rootDir/releasenotes.txt"
@@ -114,10 +112,8 @@ android {
         prod {
             dimension "template"
             resValue "string", "app_name", "Template"
-            manifestPlaceholders.hostName = "command-center.kpnfarmfresh.com"
-            buildConfigField "String", "HOST_NAME", '"api.kpnfarmfresh.com"'
             buildConfigField "String", "DATA_STORE", '"TEMPLATE_DATA_STORE"'
-            buildConfigField "String", "BFF_HOST", '"https://api.kpnfarmfresh.com/s/command-center/api/"'
+            buildConfigField "String", "BFF_HOST", '"https://neilsayok.github.io/imagelib/apis/"'
             firebaseAppDistribution {
                 artifactType = "APK"
                 releaseNotesFile = "$rootDir/releasenotes.txt"

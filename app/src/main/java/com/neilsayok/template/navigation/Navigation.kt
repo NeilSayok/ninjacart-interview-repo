@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.neilsayok.template.commonviewmodels.PreferenceViewModel
-import com.neilsayok.template.ui.launchScreen.FirstScreen
+import com.neilsayok.template.ui.homescreen.screen.HomeScreen
 
 
 @Composable
@@ -27,11 +27,11 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = Screen.FirstScreen.route
+        startDestination = Screen.HomeScreen.route
     ) {
 
-        animatedComposable(route = Screen.FirstScreen.route) {
-            FirstScreen(navController = navController,
+        animatedComposable(route = Screen.HomeScreen.route) {
+            HomeScreen(navController = navController,
                 preferenceViewModel = preferenceViewModel
             )
         }

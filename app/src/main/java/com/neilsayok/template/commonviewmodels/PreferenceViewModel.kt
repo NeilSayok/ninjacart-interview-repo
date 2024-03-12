@@ -9,6 +9,7 @@ import com.neilsayok.template.data.datastore.PreferenceDataStoreHelper
 import com.neilsayok.template.data.model.common.Resource
 import com.neilsayok.template.data.model.common.error.ErrorEventData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -16,10 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class PreferenceViewModel @Inject constructor(
     val preferenceDataStoreHelper: PreferenceDataStoreHelper,
-    val errorData: MutableLiveData<Resource<ErrorEventData?>>,
+    val errorData: MutableStateFlow<Resource<ErrorEventData?>?>,
     ) : ViewModel() {
 
-    val showLoader = MutableLiveData(true)
+    val showLoader = MutableLiveData(false)
 
 
 

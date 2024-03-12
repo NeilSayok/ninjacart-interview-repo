@@ -3,7 +3,7 @@ package com.neilsayok.template.navigation
 sealed class Screen(val route : String) {
 
 //    object Screen : Screen("_screen")
-    object FirstScreen : Screen("First_screen")
+    object HomeScreen : Screen("home_screen")
 
     fun withArgs(vararg args: String): String {
         return buildString {
