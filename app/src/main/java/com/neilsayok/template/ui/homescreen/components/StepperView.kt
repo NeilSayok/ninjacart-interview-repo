@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,6 +42,7 @@ import com.neilsayok.template.theme.FontPrimaryDark
 import com.neilsayok.template.theme.Primary
 import com.neilsayok.template.ui.quantityselection.componets.QuantityGrid
 import com.neilsayok.template.utils.fontDimensionResource
+import com.neilsayok.template.utils.showToast
 import com.neilsayok.template.utils.toCamelCase
 
 
@@ -48,7 +50,10 @@ import com.neilsayok.template.utils.toCamelCase
 fun StepperView(
     item: Item?,
     onValueChange: (item: Item?) -> Unit,
+    max: Int?,
+    totalPrice : Int?
 ) {
+    val context = LocalContext.current
     var currentValue by remember {
         mutableStateOf(0)
     }
@@ -165,7 +170,10 @@ fun StepperView(
                 modifier = Modifier
                     .fillMaxSize()
                     .clickable {
-                        currentValue += item?.multiple ?: 0
+                        if ((totalPrice?:0) <= (max?:0))
+                            currentValue += item?.multiple ?: 0
+                        else
+                            showToast(context,"You have reached the cart limit")
                     }, contentAlignment = Alignment.Center
             ) {
                 Text(

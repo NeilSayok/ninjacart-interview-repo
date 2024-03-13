@@ -58,7 +58,9 @@ fun ProgressIndicatorWithSteps(
     points: List<Point?>?) {
 
     Log.d("currentValue", currentValue.toString())
-    val context = LocalContext.current
+
+    val range = (max?:0) - (min?:0)
+
 
     ConstraintLayout(
         modifier = Modifier
@@ -68,7 +70,7 @@ fun ProgressIndicatorWithSteps(
         val pointConstraintDotTextList = List((points?: emptyList()).size) { Pair(createRef(),createRef()) }
         val (progressBar, minPrice, maxPrice) = createRefs()
 
-        val currentProgress = ((((currentValue?:0)*100)/(max?:1).toFloat())/100F)
+        val currentProgress = (((((currentValue?:0) - (min?:0))*100)/(range).toFloat())/100F)
         Log.d("currentValue", currentProgress.toString())
 
 
@@ -108,7 +110,7 @@ fun ProgressIndicatorWithSteps(
 
 
         pointConstraintDotTextList.forEachIndexed { i, item ->
-            val bias = ((((points?.get(i)?.value?:0)*100)/(max?:0).toFloat())/100F)
+            val bias = (((((points?.get(i)?.value?:0)-(min?:0)) *100)/(range).toFloat())/100F)
 
             Card(
                 shape = CircleShape,

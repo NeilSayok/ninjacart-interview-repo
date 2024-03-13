@@ -65,7 +65,7 @@ fun HomeScreen(
     Log.d("item", fetchPriceViewModel.itemSet.toList().toString())
     var totalPrice by remember {
         mutableStateOf(
-            0
+            getFetchPriceResponse.value?.data?.min?:0
         )
     }
 
@@ -82,7 +82,6 @@ fun HomeScreen(
             }
             if (totalPrice < it.key && it.value) {
                 fetchPriceViewModel.showToastForPoint[it.key] = false
-
             }
         }
 
@@ -111,9 +110,14 @@ fun HomeScreen(
                                     fetchPriceViewModel.showToastForPoint.put(it.value, false)
                                 }
                             }
+                            this.data?.max?.let { max ->
+                                fetchPriceViewModel.showToastForPoint.put(
+                                    max, false)
+                            }
                         }
 
                         else -> {
+                            preferenceViewModel.hideLoadingDialog()
                         }
 
                     }
@@ -142,7 +146,7 @@ fun HomeScreen(
 
             getFetchPriceResponse.value?.data?.items?.forEach {
                 Spacer(modifier = Modifier.height(dimensionResource(id = com.intuit.sdp.R.dimen._8sdp)))
-                StepperView(item = it, onValueChange = { item ->
+                StepperView(item = it, max = getFetchPriceResponse.value?.data?.max, totalPrice = totalPrice, onValueChange = { item ->
                     Log.d("onValueChange", "$item")
                     if (item != null) {
                         val newList =
