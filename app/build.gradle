@@ -100,7 +100,7 @@ android {
             dimension "template"
             applicationIdSuffix ".staging"
             versionNameSuffix "-stage"
-            resValue "string", "app_name", "Template Stage"
+            resValue "string", "app_name", "Interview Stage"
             buildConfigField "String", "DATA_STORE", '"TEMPLATE_DATA_STORE"'
             buildConfigField "String", "BFF_HOST", '"https://neilsayok.github.io/imagelib/apis/"'
             firebaseAppDistribution {
@@ -111,7 +111,7 @@ android {
         }
         prod {
             dimension "template"
-            resValue "string", "app_name", "Template"
+            resValue "string", "app_name", "Ninja Cart Interview"
             buildConfigField "String", "DATA_STORE", '"TEMPLATE_DATA_STORE"'
             buildConfigField "String", "BFF_HOST", '"https://neilsayok.github.io/imagelib/apis/"'
             firebaseAppDistribution {
