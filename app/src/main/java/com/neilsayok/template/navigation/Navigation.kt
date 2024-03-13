@@ -11,9 +11,11 @@ import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.neilsayok.template.commonviewmodels.PreferenceViewModel
 import com.neilsayok.template.ui.homescreen.screen.HomeScreen
+import com.neilsayok.template.ui.quantityselection.screen.QuantitySelectionDialog
 
 
 @Composable
@@ -32,6 +34,11 @@ fun Navigation(
 
         animatedComposable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController,
+                preferenceViewModel = preferenceViewModel
+            )
+        }
+        dialog(route = Screen.SelectQuantityScreen.route) {
+            QuantitySelectionDialog(navController = navController,
                 preferenceViewModel = preferenceViewModel
             )
         }

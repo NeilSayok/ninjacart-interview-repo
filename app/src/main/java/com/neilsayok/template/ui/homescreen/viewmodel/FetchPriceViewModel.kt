@@ -1,6 +1,7 @@
 package com.neilsayok.template.ui.homescreen.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neilsayok.template.data.datastore.PreferenceDataStoreHelper
@@ -30,6 +31,8 @@ class FetchPriceViewModel @Inject constructor(
     private val _getFetchPriceResponse =
         MutableStateFlow<Resource<FetchPriceResponse>?>(Resource(Resource.Status.NULL, null))
     val getFetchPriceResponse = _getFetchPriceResponse.asStateFlow()
+
+    val priceMap = SnapshotStateMap<Int,Int>()
 
     fun getPriceDetails() {
         val exceptionHandler = coroutineExceptionHandlerWithFlow(

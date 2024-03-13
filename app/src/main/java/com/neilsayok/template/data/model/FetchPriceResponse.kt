@@ -20,7 +20,9 @@ data class FetchPriceResponse(
 data class Item(
     @SerializedName("eachQtyValue") val eachQtyValue: Int?,
     @SerializedName("multiple") val multiple: Int?,
-    @SerializedName("name") val name: String?
+    @SerializedName("name") val name: String?,
+    @SerializedName("selectedQuantity") var selectedQuantity: Int = 0,
+
 ) : Parcelable
 
 @Keep
