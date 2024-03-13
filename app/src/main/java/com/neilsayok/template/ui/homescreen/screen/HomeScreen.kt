@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
@@ -54,18 +55,6 @@ fun HomeScreen(navController: NavHostController,
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    var openAlertDialog by remember { mutableStateOf(false) }
-    var dialogSelectedQuantity by remember { mutableStateOf(0) }
-    var selectedPrice by remember { mutableStateOf(0) }
-
-    var currentPrice by remember { mutableStateOf(0) }
-
-
-    LaunchedEffect(getFetchPriceResponse){
-        Log.d("getFetchPriceResponse", getFetchPriceResponse.toString())
-    }
-
-
 
     LaunchedEffect(Unit) {
         scope.launch(Dispatchers.IO) {
@@ -96,41 +85,6 @@ fun HomeScreen(navController: NavHostController,
 
 
 
-    if (openAlertDialog)
-        Dialog(onDismissRequest = { openAlertDialog = false }) {
-            ConstraintLayout(
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen._20sdp))
-                    .height(dimensionResource(id = R.dimen._200sdp))
-            ) {
-                val (closeButton, gridCard) = createRefs()
-
-                Card(modifier = Modifier
-                    .constrainAs(gridCard) {
-                        linkTo(parent.start, parent.end)
-                        linkTo(parent.top, parent.bottom)
-                        width = Dimension.wrapContent
-                        height = Dimension.wrapContent
-                    }) {
-                    QuantityGrid(
-                        dialogSelectedQuantity,
-                        onQuantitySelect = { quantity ->
-                            openAlertDialog = false
-                            Log.d("Dialog", "$quantity $selectedPrice")
-                        })
-                }
-                Card(
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .clickable { openAlertDialog = false }
-                        .constrainAs(closeButton) {
-                            linkTo(parent.top, parent.top)
-                            linkTo(parent.end, parent.end)
-                        }) {
-                    Icon(imageVector = Icons.Outlined.Close, contentDescription = "close dialog")
-                }
-            }
-        }
 
 
 
@@ -140,22 +94,19 @@ fun HomeScreen(navController: NavHostController,
             ProgressIndicatorWithSteps(
                 min = getFetchPriceResponse.value?.data?.min,
                 max = getFetchPriceResponse.value?.data?.max,
-                currentValue = currentPrice,
+                currentValue = 0,
                 points = getFetchPriceResponse.value?.data?.points
             )
 
             getFetchPriceResponse.value?.data?.items?.forEach {
                 Spacer(modifier = Modifier.height(dimensionResource(id = com.intuit.sdp.R.dimen._8sdp)))
                 StepperView(item = it,
-                    onTextClick = {
-                        openAlertDialog = true
-                        dialogSelectedQuantity = it?.multiple ?: 0
-                        selectedPrice = it?.eachQtyValue ?: 0
-                    },
                     onValueChange = { quantity, multiplier ->
-
+                        Log.d("onValueChange", "$quantity, $multiplier")
                     })
             }
+
+
 
         }
     }
