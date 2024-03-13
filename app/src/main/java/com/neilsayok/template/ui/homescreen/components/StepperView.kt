@@ -47,7 +47,7 @@ import com.neilsayok.template.utils.toCamelCase
 @Composable
 fun StepperView(
     item: Item?,
-    onValueChange: (currentValue: Int, multiplier: Int) -> Unit,
+    onValueChange: (item: Item?) -> Unit,
 ) {
     var currentValue by remember {
         mutableStateOf(0)
@@ -55,7 +55,8 @@ fun StepperView(
     var openAlertDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(currentValue) {
-        onValueChange(currentValue, item?.eachQtyValue ?: 0)
+        item?.selectedQuantity = currentValue
+        onValueChange(item)
     }
 
     if (openAlertDialog)

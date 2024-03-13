@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neilsayok.template.data.datastore.PreferenceDataStoreHelper
 import com.neilsayok.template.data.model.FetchPriceResponse
+import com.neilsayok.template.data.model.Item
 import com.neilsayok.template.data.model.common.Resource
 import com.neilsayok.template.data.model.common.error.ErrorEventData
 import com.neilsayok.template.data.model.common.toLoading
@@ -27,12 +28,14 @@ class FetchPriceViewModel @Inject constructor(
     val errorData: MutableStateFlow<Resource<ErrorEventData?>?>,
     ) : ViewModel() {
 
+    val itemSet = mutableListOf<Item?>()
+    val showToastForPoint = mutableMapOf<Int, Boolean>()
+
 
     private val _getFetchPriceResponse =
         MutableStateFlow<Resource<FetchPriceResponse>?>(Resource(Resource.Status.NULL, null))
     val getFetchPriceResponse = _getFetchPriceResponse.asStateFlow()
 
-    val priceMap = SnapshotStateMap<Int,Int>()
 
     fun getPriceDetails() {
         val exceptionHandler = coroutineExceptionHandlerWithFlow(
